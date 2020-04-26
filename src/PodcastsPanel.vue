@@ -1,11 +1,11 @@
 <template >
-  <div class="cards-panel">
-    <div class="card" v-for="podcast in podcasts" :key="`podcast-${podcast.title}`">
+  <div id="cards-panel">
+    <div class="card" v-for="podcast in filterEventsByCategory()" :key="`podcast-${podcast.title}`">
       <img class="card-img-top" :src="podcast.imagePath" alt="Card image cap" />
       <div class="card-body">
         <h5 class="card-title">{{podcast.title}}</h5>
         <p class="card-text">{{podcast.description}}</p>
-        <button class="btn btn-outline-default my-2 my-sm-0" type="submit">Odtwórz</button>
+        <button class="btn btn-outline-default shadow-none my-2 my-sm-0" type="submit">Odtwórz</button>
       </div>
     </div>
   </div>
@@ -14,9 +14,42 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
+  props: ["category", "searchPhrase"],
   name: "PodcastsList",
   computed: {
     ...mapGetters(["podcasts"])
+  },
+  methods: {
+    filterEventsByCategory() {
+      console.log(this.searchPhrase);
+      console.log(this.category);
+      if (
+        this.category == "all" ||
+        this.category == undefined ||
+        this.category == null
+      )
+        return this.podcasts.filter(
+          podcast =>
+            podcast.title
+              .toUpperCase()
+              .includes(this.searchPhrase.toUpperCase()) ||
+            podcast.description
+              .toUpperCase()
+              .includes(this.searchPhrase.toUpperCase())
+        );
+      else
+        return this.podcasts
+          .filter(podcast => podcast.category === this.category)
+          .filter(
+            podcast =>
+              podcast.title
+                .toUpperCase()
+                .includes(this.searchPhrase.toUpperCase()) ||
+              podcast.description
+                .toUpperCase()
+                .includes(this.searchPhrase.toUpperCase())
+          );
+    }
   }
 };
 </script>
@@ -41,12 +74,16 @@ export default {
   right: 10px;
 }
 
+.btn:active {
+  transform: scale(0.9);
+}
+
 .btn:hover {
   background-color: #62546a;
   color: white;
 }
 
-.cards-panel {
+#cards-panel {
   margin: 0 5% 5% 5%;
   overflow: hidden;
   text-align: center;

@@ -1,11 +1,11 @@
 <template>
   <div id="home">
     <div id="header-banner-box">
-      <app-header></app-header>
+      <app-header :searchPhrase="searchPhrase" @searchWasApproved="searchPhrase = $event"></app-header>
       <app-banner></app-banner>
     </div>
-    <app-toolbar></app-toolbar>
-    <app-podcast-panel></app-podcast-panel>
+    <app-toolbar :category.sync="category" @categoryWasEdited="category = $event"></app-toolbar>
+    <app-podcast-panel :category.sync="category" :searchPhrase="searchPhrase"></app-podcast-panel>
     <app-footer></app-footer>
   </div>
 </template>
@@ -23,10 +23,12 @@ export default {
     appBanner: Banner,
     appPodcastPanel: PodcastPanel,
     appToolbar: Toolbar
+  },
+  data: function() {
+    return { category: "all", searchPhrase: "" };
   }
 };
 </script>
-
 <style scoped>
 body {
   height: 100%;

@@ -1,20 +1,35 @@
 <template>
   <nav class="navbar navbar-inverse">
     <a class="navbar-brand" id="logo" href="#">PURPLECAST</a>
-    <form class="form-inline">
+    <div class="inline">
       <input
-        class="form-control mr-sm-2"
+        class="form-control btn-light"
         type="search"
-        placeholder="Szukaj podcastu"
+        placeholder="Szukaj"
         aria-label="Search"
+        v-model="phrase"
+        v-on:keyup.enter="submit"
       />
-      <button class="btn btn-outline-default my-2 my-sm-0" type="submit">Szukaj</button>
-    </form>
+      <form class="form-inline my-2 my-lg-0">
+        <button class="btn shadow-none user-button"></button>
+      </form>
+    </div>
   </nav>
 </template>
 
 <script>
-export default {};
+export default {
+  props: ["searchPhrase"],
+  data() {
+    return { phrase: "" };
+  },
+  methods: {
+    submit() {
+      console.log(this.phrase);
+      this.$emit("searchWasApproved", this.phrase);
+    }
+  }
+};
 </script>
 <style scoped>
 #logo {
@@ -24,10 +39,15 @@ export default {};
   font-size: 20px;
   letter-spacing: 4px;
 }
+
+.form-control {
+  position: relative;
+  float: left;
+}
 .btn,
 .form-control {
   border-radius: 0px;
-  color: white;
+  color: black;
   border: 1px solid white;
   font-family: "Francois One", sans-serif;
 }
@@ -42,5 +62,26 @@ export default {};
   color: white;
   padding-left: 25px;
   padding-right: 25px;
+}
+
+.user-button {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  background-image: url("../assets/user.png");
+  background-size: contain;
+  border: none;
+  position: relative;
+  float: right;
+  margin-left: 20px;
+  background-color: transparent;
+}
+
+.user-button:active {
+  transform: scale(0.9);
+}
+
+.inline {
+  display: flex;
 }
 </style>
