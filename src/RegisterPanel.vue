@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-body">
-      <form action="http://localhost:8080/index.html">
+      <form id="register-form">
         <div class="form-group">
           <label>
             Nazwa użytkownika
@@ -10,6 +10,7 @@
               class="form-control"
               name="username"
               placeholder="Wprowadź login"
+              v-model="user.username"
             />
           </label>
         </div>
@@ -21,6 +22,7 @@
               class="form-control"
               name="password"
               placeholder="Wprowadź hasło"
+              v-model="user.password"
             />
           </label>
         </div>
@@ -32,19 +34,47 @@
               class="form-control"
               name="password-repeat"
               placeholder="Wprowadź hasło ponownie"
+              v-model="user.repeatPassword"
             />
           </label>
         </div>
         <button
-          type="submit"
+          type="button"
           class="btn btn-outline-default shadow-none btn-margin"
           style="float: right;"
+          @click="submit"
         >Zarejestruj się</button>
       </form>
     </div>
   </div>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+      user: {
+        username: "",
+        password: "",
+        repeatPassword: ""
+      }
+    };
+  },
+  methods: {
+    submit() {
+      console.log(this.user);
+      this.$http.post("http://localhost:8081/register", this.user).then(
+        response => {
+          console.log(response);
+        },
+        error => {
+          console.log(error);
+        }
+      );
+    }
+  }
+};
+</script>
 <style scoped>
 .card,
 .btn,

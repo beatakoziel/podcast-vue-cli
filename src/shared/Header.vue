@@ -10,7 +10,7 @@
         v-model="phrase"
         v-on:keyup.enter="submit"
       />
-      <form action="http://localhost:8080/login.html" class="form-inline my-2 my-lg-0">
+      <form class="form-inline my-2 my-lg-0">
         <button class="btn shadow-none user-button"></button>
       </form>
     </div>

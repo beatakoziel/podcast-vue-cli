@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-body">
-      <form action="http://localhost:8080/index.html">
+      <form>
         <div class="form-group">
           <label>
             Nazwa użytkownika
@@ -10,6 +10,7 @@
               class="form-control"
               name="username"
               placeholder="Wprowadź login"
+              v-model="user.username"
             />
           </label>
         </div>
@@ -21,21 +22,51 @@
               class="form-control"
               name="password"
               placeholder="Wprowadź hasło"
+              v-model="user.password"
             />
           </label>
         </div>
         <button
-          type="submit"
+          type="button"
           class="btn btn-outline-default shadow-none btn-margin"
           style="float: right;"
+          @click="submit"
         >Zaloguj</button>
       </form>
       <p>______________________________</p>
       <p id="question">Nie posiadasz jeszcze konta?</p>
-      <a href="http://localhost:8080/register.html">Zarejestruj</a>
+      <a>Zarejestruj</a>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      user: {
+        username: "",
+        password: ""
+      }
+    };
+  },
+  methods: {
+    submit() {
+      console.log(this.user);
+      this.$http.post("http://localhost:8081/login", this.user).then(
+        response => {
+          this.$cookie.set("jwt", response.body.jwt, 1);
+          console.log("COOKIE");
+          console.log(this.$cookie.get("jwt"));
+        },
+        error => {
+          console.log(error);
+        }
+      );
+    }
+  }
+};
+</script>
 
 <style scoped>
 .card,

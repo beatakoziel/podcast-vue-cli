@@ -7,7 +7,11 @@ import products from '../podcasts.js'
 import Home from './Home.vue'
 import Login from './Login.vue'
 import Register from './Register.vue'
+import VueResource from 'vue-resource'
+import VueCookie from 'vue-cookie'
 
+Vue.use(VueCookie);
+Vue.use(VueResource)
 Vue.use(Vuex);
 window.$ = JQuery;
 
