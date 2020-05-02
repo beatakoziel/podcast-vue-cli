@@ -10,7 +10,7 @@
         v-model="phrase"
         v-on:keyup.enter="submit"
       />
-      <form class="form-inline my-2 my-lg-0">
+      <form action="http://localhost:8080/login.html" class="form-inline my-2 my-lg-0">
         <button class="btn shadow-none user-button"></button>
       </form>
     </div>
@@ -25,8 +25,10 @@ export default {
   },
   methods: {
     submit() {
-      console.log(this.phrase);
       this.$emit("searchWasApproved", this.phrase);
+      document
+        .getElementById("cards-panel")
+        .scrollIntoView({ behavior: "smooth" });
     }
   }
 };
