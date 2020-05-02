@@ -1,7 +1,7 @@
 <template >
   <div id="cards-panel">
     <div class="card" v-for="podcast in filterEventsByCategory()" :key="`podcast-${podcast.title}`">
-      <img class="card-img-top" :src="podcast.imagePath" alt="Card image cap" />
+      <img class="card-img-top" :src="podcast.imageUrl" alt="Card image cap" />
       <div class="card-body">
         <h5 class="card-title">{{podcast.title}}</h5>
         <p class="card-text">{{podcast.description}}</p>
@@ -16,10 +16,37 @@ import { mapGetters } from "vuex";
 export default {
   props: ["category", "searchPhrase"],
   name: "PodcastsList",
+  data() {
+    return {
+      podcasts: []
+    };
+  },
   computed: {
-    ...mapGetters(["podcasts"])
+    //...mapGetters(["podcasts"])
+  },
+  beforeMount() {
+    this.getPodcasts();
   },
   methods: {
+    getPodcasts() {
+      this.$http
+        .get("http://localhost:8081/users/podcasts", {
+          headers: {
+            Authorization: this.$cookie.get("jwt")
+          }
+        })
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+          const resultArray = [];
+          for (let key in data) {
+            resultArray.push(data[key].podcast);
+          }
+          this.podcasts = resultArray;
+          console.log(podcasts);
+        });
+    },
     filterEventsByCategory() {
       console.log(this.searchPhrase);
       console.log(this.category);
